@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Analysis Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+            background: rgb(189, 184, 184);
+            line-height: 1.6;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .section {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+            transition: transform 0.2s;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            color: #34495e;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 5px;
+        }
+
+        input[type="file"] {
+            display: block;
+            margin: 10px 0;
+            padding: 8px;
+            width: 100%;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            margin: 10px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        #uploadStatus {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        #uploadStatus p {
+            color: #27ae60;
+        }
+
+        #conversation {
+            background: #ecf0f1;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .chat-entry {
+            margin-bottom: 15px;
+        }
+
+        .chat-entry .prompt {
+            color: #2c3e50;
+            font-weight: bold;
+        }
+
+        .chat-entry .answer {
+            color: #34495e;
+            margin-left: 20px;
+        }
+
+        .error {
+            color: #e74c3c;
+            background: #fdecea;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 15px; }
+            h1 { font-size: 2em; }
+            .section { padding: 15px; }
+            button { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Data Analysis Tool</h1>
+    
+    <div class="section">
+        <h2>Upload File (.csv, .txt, .docx)</h2>
+        <input type="file" id="fileInput" accept=".csv,.txt,.log,.docx">
+        <button onclick="uploadFile()">Upload</button>
+        <div id="uploadStatus"></div>
+    </div>
+    
+    <div class="section">
+        <h2>Ask a Question</h2>
+        <textarea id="prompt" placeholder="Enter your question about the dataset..."></textarea>
+        <button onclick="submitQuery()">Submit</button>
+    </div>
+    
+    <div id="conversation"></div>
+
+    <script>
+        function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const statusDiv = document.getElementById('uploadStatus');
+            const conversationDiv = document.getElementById('conversation');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                statusDiv.innerHTML = '<p class="error">Please select a file</p>';
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    statusDiv.innerHTML = `<p class="error">${data.error}</p>`;
+                } else {
+                    statusDiv.innerHTML = '<p>Upload successful!</p>';
+                    conversationDiv.innerHTML = ''; // Clear conversation on new upload
+                }
+            })
+            .catch(error => {
+                statusDiv.innerHTML = `<p class="error">Error uploading file: ${error}</p>`;
+            });
+        }
+
+        function submitQuery() {
+            const prompt = document.getElementById('prompt').value;
+            const conversationDiv = document.getElementById('conversation');
+            
+            if (!prompt) {
+                conversationDiv.innerHTML = '<p class="error">Please enter a question</p>';
+                return;
+            }
+
+            fetch('/query', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prompt: prompt })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    conversationDiv.innerHTML = `<p class="error">${data.error}</p>`;
+                } else {
+                    // Display the full conversation history
+                    let historyHtml = '';
+                    data.history.forEach(entry => {
+                        historyHtml += `
+                            <div class="chat-entry">
+                                <p class="prompt">Q: ${entry.prompt}</p>
+                                <p class="answer">A: ${entry.answer}</p>
+                            </div>`;
+                    });
+                    conversationDiv.innerHTML = historyHtml;
+                    document.getElementById('prompt').value = ''; // Clear the textarea
+                    conversationDiv.scrollTop = conversationDiv.scrollHeight; // Auto-scroll to bottom
+                }
+            })
+            .catch(error => {
+                conversationDiv.innerHTML = `<p class="error">Error: ${error}</p>`;
+            });
+        }
+    </script>
+</body>
+</html>
