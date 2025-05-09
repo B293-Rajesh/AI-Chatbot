@@ -12,3 +12,12 @@
 - **Maintains conversation history for better context**: The chatbot remembers previous interactions to give more contextually relevant answers.
 
 - **Responsive web interface built with HTML/CSS/JS**: User-friendly, responsive design for seamless interaction on both desktop and mobile devices.
+## 🛠️ Installation
+
+### Requires Python 3.11+
+
+### Clone the repository
+
+```bash
+git clone https://github.com/B293-Rajesh/AI-Chatbot.git
+cd Ai-Chatbot
