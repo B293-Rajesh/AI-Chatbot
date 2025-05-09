@@ -28,7 +28,8 @@ pip install -r requirements.txt
 
 python app.py
 ```
-##📝 Example Questions
+
+## 📝 Example Questions
 
 1. What is the average salary in the dataset?
 
@@ -36,7 +37,7 @@ python app.py
 
 3. Summarize the contents of the text document.
 
-##📦 Dependencies
+##  📦 Dependencies
 
 Make sure your requirements.txt includes:
 
@@ -50,7 +51,7 @@ docx==1.1.2
 openai==0.28.1
 
 ```
-##🤖 Credits
+## 🤖 Credits
 
 Flask - Web framework for building the app.
 
