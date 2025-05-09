@@ -41,15 +41,13 @@ python app.py
 Make sure your requirements.txt includes:
 
 ```bash
+
+python==3.11.9(also supports 3.10)
 Flask==3.1.0
-
-pandas
-
-pandasai
-
-python-docx
-
-openai
+pandas==2.2.3
+pandasai==2.4.2
+docx==1.1.2
+openai==0.28.1
 
 ```
 ###🤖 Credits
