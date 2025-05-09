@@ -9,7 +9,7 @@ from docx import Document
 app = Flask(__name__)
 
 # Set OpenAI API Key (ensure it's set in your environment for security)
-os.environ["OPENAI_API_KEY"] = "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"  # Replace with your actual API key
+os.environ["OPENAI_API_KEY"] = "OPENAI_API_KEY"  # Replace with your actual API key
 
 # Global variables
 sdf = None
