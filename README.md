@@ -19,5 +19,51 @@
 ### Clone the repository
 
 ```bash
+
 git clone https://github.com/B293-Rajesh/AI-Chatbot.git
-cd Ai-Chatbot
+
+cd AI-Chatbot
+
+pip install -r requirements.txt
+
+python app.py
+```
+###📝 Example Questions
+
+1. What is the average salary in the dataset?
+
+2. Generate a bar chart of sales by year.
+
+3. Summarize the contents of the text document.
+
+###📦 Dependencies
+
+Make sure your requirements.txt includes:
+
+```bash
+Flask==3.1.0
+
+pandas
+
+pandasai
+
+python-docx
+
+openai
+
+```
+###🤖 Credits
+
+Flask - Web framework for building the app.
+
+PandasAI - AI integration for data analysis.
+
+OpenAI - GPT model for question answering
+
+
+
+This includes detailed instructions for installation, environment setup, running the app, example questions, and the required dependencies. You can replace `your_openai_key` with your actual OpenAI API key.
+
+Make sure to customize the GitHub repository link (`https://github.com/B293-Rajesh/AI-Chatbot`) with your actual repository URL.
+
+Once done, this section can be pasted into the `README.md` file under your GitHub repository. Let me know if you need any changes!
