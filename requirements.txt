@@ -1,6 +1,8 @@
-#python==3.11.9(also supports 3.10)
-Flask==3.1.0
-pandas==2.2.3
+streamlit
+beautifulsoup4
+pandas==1.5.3
 pandasai==2.4.2
-docx==1.1.2
-openai==0.28.1
+python-docx
+openpyxl
+requests
+flask==3.1.0
